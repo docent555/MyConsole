@@ -16,6 +16,8 @@
 
             WriteLine();
 
+            Console.WriteLine("Ветка master.");
+
             priceUp = decimal.Parse(ReadLine("Задайте верхнюю цену: "));
 
             priceDown = int.Parse(ReadLine("Введите нижнюю цену: "));
