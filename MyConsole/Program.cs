@@ -16,7 +16,7 @@
 
             WriteLine();
 
-            Console.WriteLine("Новая ветка.");
+            Console.WriteLine("Новая ветка 2.");
 
             priceUp = decimal.Parse(ReadLine("Задайте верхнюю цену: "));
 
