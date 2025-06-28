@@ -1,31 +1,52 @@
-﻿namespace MyConsole
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+
+namespace MyConsole
 {
-    internal class Program
-    {
-        static decimal priceUp;
-
-        static decimal priceDown;
-
-        static decimal stepLevel;
-
-        static List<decimal> levels;
-
+    public class Program
+    {       
         static void Main(string[] args)
         {
-            levels = new List<decimal>();
+            //Position position = new Position();
+
+            levels = new List<Level>();
+
+            Load();                     
 
             WriteLine();
 
-            Console.WriteLine("Новая ветка.");
-
-            priceUp = decimal.Parse(ReadLine("Задайте верхнюю цену: "));
+            priceUp = decimal.Parse(ReadLine("\nЗадайте верхнюю цену: "));
 
             priceDown = int.Parse(ReadLine("Введите нижнюю цену: "));
 
             StepLevel = decimal.Parse(ReadLine("Введите шаг уровня: "));
 
+            lotLevel = decimal.Parse(ReadLine("Введите лот на уровень: "));
+
             WriteLine();
+
+            Save();
+
+            Console.ReadLine();
         }
+        
+        //=============================================== Fields ===============================================
+        #region Fields
+
+        static decimal priceUp;
+
+        static decimal priceDown;
+
+        static List<Level> levels;
+
+        static decimal lotLevel;
+
+        #endregion
+
+
+        //=============================================== Properties ==========================================
+        #region Properties
 
         static decimal StepLevel
         {
@@ -36,17 +57,87 @@
 
             set
             {
-                stepLevel = value;
-
-                decimal priceLevel = priceUp;
-
-                while (priceLevel >= priceDown)
+                if (value <= 100)
                 {
-                    levels.Add(priceLevel);
+                    stepLevel = value;
 
-                    priceLevel -= stepLevel;
+                    decimal priceLevel = priceUp;
+
+                    levels = Level.CalculateLevels(priceUp, priceDown, stepLevel);
+                }                
+            }
+        }
+        static decimal stepLevel;
+
+        #endregion
+
+
+        //=============================================== Methods ===============================================
+        #region Methods
+
+        static void Save()
+        {
+            using (StreamWriter writer = new StreamWriter("params.txt", false))
+            {
+                writer.WriteLine(priceUp.ToString());
+
+                writer.WriteLine(priceDown.ToString());
+
+                writer.WriteLine(levels.Count.ToString());
+            }
+        }
+
+        static void Load()
+        {
+            using (StreamReader reader = new StreamReader("params.txt"))
+            {
+                int index = 0;
+
+                while (true)
+                {
+                    string line = reader.ReadLine();
+
+                    index++;
+
+                    switch (index)
+                    {
+                        case 1: priceUp = decimal.Parse(line); break;
+                        case 2: priceDown = decimal.Parse(line); break;
+                        case 3: StepLevel = decimal.Parse(line); break;
+                    }
+
+                    if (line == null)
+                        break;
                 }
             }
+
+            //try
+            //{
+            //    StreamReader reader = new StreamReader("params.txt");
+
+            //    int index = 0;
+
+            //    while (true)
+            //    {
+            //        string line = reader.ReadLine();
+
+            //        index++;
+
+            //        switch (index)
+            //        {
+            //            case 1: priceUp = decimal.Parse(line); break;
+            //            case 2: priceDown = decimal.Parse(line); break;
+            //            case 3: StepLevel = decimal.Parse(line); break;
+            //        }       
+
+            //        if (line == null)
+            //            break;
+            //    }
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine(e.Message);
+            //}
         }
 
         static void WriteLine()
@@ -55,7 +146,7 @@
 
             for (int i = 0; i < levels.Count; i++)
             {
-                Console.WriteLine(levels[i]);
+                Console.WriteLine(levels[i].PriceLevel);
             }
         }
 
@@ -67,6 +158,8 @@
 
             return str;
         }
+        
+        #endregion
     }
 }
 
