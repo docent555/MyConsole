@@ -29,6 +29,9 @@ namespace MyConsole
             Save();
 
             Console.ReadLine();
+
+            int testVar = 100;
+            Console.WriteLine(testVar);
         }
         
         //=============================================== Fields ===============================================
