@@ -18,7 +18,7 @@ namespace MyConsole
 
             priceUp = decimal.Parse(ReadLine("\nЗадайте верхнюю цену: "));
 
-            priceDown = int.Parse(ReadLine("Введите нижнюю цену: "));
+            countLevels = int.Parse(ReadLine("Введите количество уровней: "));
 
             StepLevel = decimal.Parse(ReadLine("Введите шаг уровня: "));
 
@@ -35,8 +35,8 @@ namespace MyConsole
         #region Fields
 
         static decimal priceUp;
-
-        static decimal priceDown;
+      
+        static int countLevels;
 
         static List<Level> levels;
 
@@ -63,7 +63,8 @@ namespace MyConsole
 
                     decimal priceLevel = priceUp;
 
-                    levels = Level.CalculateLevels(priceUp, priceDown, stepLevel);
+                    levels = Level.CalculateLevels(priceUp, countLevels, stepLevel);
+                    //levels = Level.CalculateLevels(priceUp, priceDown, stepLevel);
                 }                
             }
         }
@@ -81,9 +82,9 @@ namespace MyConsole
             {
                 writer.WriteLine(priceUp.ToString());
 
-                writer.WriteLine(priceDown.ToString());
+                writer.WriteLine(countLevels.ToString());
 
-                writer.WriteLine(levels.Count.ToString());
+                writer.WriteLine(StepLevel.ToString());
             }
         }
 
@@ -102,7 +103,7 @@ namespace MyConsole
                     switch (index)
                     {
                         case 1: priceUp = decimal.Parse(line); break;
-                        case 2: priceDown = decimal.Parse(line); break;
+                        case 2: countLevels = int.Parse(line); break;
                         case 3: StepLevel = decimal.Parse(line); break;
                     }
 
@@ -110,34 +111,6 @@ namespace MyConsole
                         break;
                 }
             }
-
-            //try
-            //{
-            //    StreamReader reader = new StreamReader("params.txt");
-
-            //    int index = 0;
-
-            //    while (true)
-            //    {
-            //        string line = reader.ReadLine();
-
-            //        index++;
-
-            //        switch (index)
-            //        {
-            //            case 1: priceUp = decimal.Parse(line); break;
-            //            case 2: priceDown = decimal.Parse(line); break;
-            //            case 3: StepLevel = decimal.Parse(line); break;
-            //        }       
-
-            //        if (line == null)
-            //            break;
-            //    }
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e.Message);
-            //}
         }
 
         static void WriteLine()
