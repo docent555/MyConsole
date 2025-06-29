@@ -37,13 +37,13 @@ namespace MyConsole
 
         #region Methods
 
-        public static List<Level> CalculateLevels(decimal priceUp, int countLevels, decimal stepLevel)
+        public static List<Level> CalculateLevels(decimal priceUp, decimal priceDown, decimal stepLevel)
         {
             List<Level> levels = new List<Level>();
 
             decimal priceLevel = priceUp;
 
-            for (int i = 0; i < countLevels; i++)
+            while (priceLevel >= priceDown)
             {
                 Level level = new Level() { PriceLevel = priceLevel};
 
